@@ -26,7 +26,7 @@ spec:
             /kaniko/executor \
             --git branch=main \
             --context=. \
-            --dockerfile=Dockerfile  # Chỉ định đường dẫn Dockerfile nếu cần
+            --dockerfile=Dockerfile \
             --destination=${IMAGE_REGISTRY}/eshop-frontend:latest
             '''   
           }
