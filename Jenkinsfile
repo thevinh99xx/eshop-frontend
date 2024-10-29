@@ -26,7 +26,6 @@ spec:
             /kaniko/executor \
             --git branch=main \
             --context=. \
-            --dockerfile=Dockerfile \
             --destination=${IMAGE_REGISTRY}/eshop-frontend:latest
             '''   
           }
