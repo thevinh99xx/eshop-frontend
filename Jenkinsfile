@@ -21,14 +21,20 @@ spec:
     stage('Build with Kaniko') {
       steps {
         container(name: 'kaniko', shell: '/busybox/sh') {
-          dir('eshop-frontend') {
+          script {
+            // Xác minh thư mục hiện tại và nội dung
+            sh '''#!/busybox/sh
+            pwd  # Kiểm tra thư mục hiện tại
+            ls -al /home/jenkins/agent/workspace/eshop-frontend  # Kiểm tra nội dung thư mục
+            '''
+            // Lệnh Kaniko
             sh '''#!/busybox/sh
             /kaniko/executor \
             --git branch=main \
             --context=/home/jenkins/agent/workspace/eshop-frontend \
             --dockerfile=Dockerfile \
             --destination=${IMAGE_REGISTRY}/eshop-frontend:latest
-            '''   
+            '''
           }
         }
       }
