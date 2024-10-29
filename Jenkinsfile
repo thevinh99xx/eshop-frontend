@@ -25,7 +25,7 @@ spec:
             sh '''#!/busybox/sh
             /kaniko/executor \
             --git branch=main \
-            --context= /home/jenkins/agent/workspace/eshop-frontend \
+            --context=/home/jenkins/agent/workspace/eshop-frontend \
             --dockerfile=Dockerfile \
             --destination=${IMAGE_REGISTRY}/eshop-frontend:latest
             '''   
