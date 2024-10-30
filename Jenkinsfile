@@ -29,14 +29,11 @@ spec:
     stage('Build with Kaniko') {
       steps {
         container(name: 'kaniko', shell: '/busybox/sh') {
-          dir('eshop-frontend') {
             sh '''#!/busybox/sh
             /kaniko/executor \
             --git branch=main \
             --context=. \
             --destination=${IMAGE_REGISTRY}/eshop-frontend:latest
-            '''   
-          }
         }
       }
       post {
