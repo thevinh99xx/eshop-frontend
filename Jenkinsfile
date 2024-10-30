@@ -3,8 +3,7 @@
 
 << ECR URI >>      => ex) 123456789012.dkr.ecr.us-east-1.amazonaws.com
 << TAG >>          => ex) latest
-<< CHANNEL ID >>   => Slack 교재-정보공유 채널에 공유된 ci-notice 채널의 ID 값으로 변경
-<< MEMBER ID >>       => Slack 워크스페이스 내 개인별 멤버 ID 값으로 변경
+<< CHANNEL ID >> => Change to the ID value of the ci-notice channel shared in the Slack textbook-information sharing channel.
 */
 pipeline {
   agent {
@@ -26,22 +25,42 @@ spec:
     IMAGE_REGISTRY = "095522511846.dkr.ecr.us-east-1.amazonaws.com"
   }
   stages {
+    
+    stage('Approval') {
+      when {
+        branch 'main'
+      }
+      steps {
+        script {
+          def plan = 'frontend CI'
+          input message: "Do you want to build and push?",
+              parameters: [text(name: 'Plan', description: 'Please review the work', defaultValue: plan)]
+        }
+      } 
+    }
+        
     stage('Build with Kaniko') {
+      when {
+        branch 'main'
+      }
       steps {
         container(name: 'kaniko', shell: '/busybox/sh') {
-            sh '''#!/busybox/sh
-            /kaniko/executor \
-            --git branch=main \
-            --context=. \
-            --destination=${IMAGE_REGISTRY}/eshop-frontend:latest
+          
+          sh '''#!/busybox/sh
+          /kaniko/executor \
+          --git branch=main \
+          --context=. \
+          --destination=${IMAGE_REGISTRY}/eshop-frontend:latest
+          '''
+
         }
       }
       post {
         success { 
-          slackSend(channel: 'C07RNC9DDBN', color: 'good', message: "(Job : ${env.JOB_NAME} - Build Number : ${env.BUILD_NUMBER}) CI success - from <@U07RQ3C04LT>")
+          slackSend(channel: 'C07RNC9DDBN', color: 'good', message: 'frontend CI success')
         }
         failure {
-          slackSend(channel: 'C07RNC9DDBN', color: 'danger', message: "(Job : ${env.JOB_NAME} - Build Number : ${env.BUILD_NUMBER}) CI fail - from <@U07RQ3C04LT>")
+          slackSend(channel: 'C07RNC9DDBN', color: 'danger', message: 'frontend CI fail')
         }
       }
     }
