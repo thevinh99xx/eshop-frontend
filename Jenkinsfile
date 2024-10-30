@@ -57,10 +57,10 @@ spec:
       }
       post {
         success { 
-          slackSend(channel: 'C07RNC9DDBN', color: 'good', message: 'frontend CI success')
+          slackSend(channel: 'C07RNC9DDBN', color: 'good', message: "(Job : ${env.JOB_NAME} - Build Number : ${env.BUILD_NUMBER}) CI success - from <@dt.vinh1>")
         }
         failure {
-          slackSend(channel: 'C07RNC9DDBN', color: 'danger', message: 'frontend CI fail')
+          slackSend(channel: 'C07RNC9DDBN', color: 'danger', message: "(Job : ${env.JOB_NAME} - Build Number : ${env.BUILD_NUMBER}) CI fail - from <@<dt.vinh1>")
         }
       }
     }
